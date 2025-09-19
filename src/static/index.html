@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultório MD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .menu-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .option-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .home-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .response-area {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+            text-align: left;
+            display: none;
+        }
+
+        .response-text {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .navigation-controls {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .breadcrumb {
+            background: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            color: #667eea;
+            font-size: 1.1em;
+            margin: 20px 0;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-group input[type="text"], .input-group input[type="date"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: white;
+        }
+
+        .form-buttons {
+            margin-top: 20px;
+        }
+
+        .form-buttons button {
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2em;
+            }
+            
+            .option-btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏥 Consultório MD</div>
+        <div class="subtitle">Sistema de Atendimento Digital</div>
+        
+        <div class="breadcrumb" id="breadcrumb"></div>
+        
+        <div class="menu-title" id="menu-title">Carregando...</div>
+        
+        <div class="loading" id="loading">Carregando opções...</div>
+        <div class="error" id="error"></div>
+        
+        <div class="menu-options" id="menu-options"></div>
+        
+        <div class="response-area" id="response-area">
+            <div class="response-text" id="response-text"></div>
+        </div>
+
+        <div class="form-area" id="form-area" style="display: none;">
+            <div class="input-group">
+                <label for="nome">Nome do Paciente:</label>
+                <input type="text" id="nome" placeholder="Seu nome completo">
+            </div>
+            <div class="input-group">
+                <label for="nascimento">Data de Nascimento:</label>
+                <input type="date" id="nascimento">
+            </div>
+            <div class="input-group" id="especialidade-select-group" style="display: none;">
+                <label for="especialidade">Especialidade:</label>
+                <select id="especialidade"></select>
+            </div>
+            <div class="input-group" id="nova-data-group" style="display: none;">
+                <label for="nova-data">Nova Data Desejada:</label>
+                <input type="date" id="nova-data">
+            </div>
+            <div class="input-group" id="data-consulta-group" style="display: none;">
+                <label for="data-consulta">Data da Consulta:</label>
+                <input type="date" id="data-consulta">
+            </div>
+            <div class="form-buttons">
+                <button class="option-btn" id="submit-form-btn">Enviar</button>
+            </div>
+        </div>
+        
+        <div class="navigation-controls" id="navigation-controls">
+            <button class="back-btn" id="back-btn" onclick="voltarMenu()">← Voltar</button>
+            <button class="home-btn" id="home-btn" onclick="voltarInicio()">🏠 Início</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPath = [];
+        let menuStack = [];
+        let currentMenuEndpoint = 
+
+        // Inicializar a aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarMenuPrincipal();
+        });
+
+        async function carregarMenuPrincipal() {
+            currentPath = [];
+            menuStack = [];
+            await carregarMenu('/api/consultorio/menu');
+        }
+
+        async function carregarMenu(endpoint) {
+            mostrarLoading(true);
+            ocultarError();
+            ocultarFormulario();
+            ocultarResposta();
+            currentMenuEndpoint = endpoint; // Salva o endpoint do menu atual
+            
+            try {
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error('Erro ao carregar menu');
+                
+                const data = await response.json();
+                exibirMenu(data);
+                
+            } catch (error) {
+                mostrarError('Erro ao carregar o menu. Tente novamente.');
+                console.error('Erro:', error);
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        function exibirMenu(menuData) {
+            const titleElement = document.getElementById('menu-title');
+            const optionsElement = document.getElementById('menu-options');
+            
+            titleElement.textContent = menuData.titulo;
+            optionsElement.innerHTML = '';
+            
+            menuData.opcoes.forEach(opcao => {
+                const button = document.createElement('button');
+                button.className = 'option-btn fade-in';
+                button.textContent = `${opcao.id} - ${opcao.texto}`;
+                button.onclick = () => selecionarOpcao(opcao.id);
+                optionsElement.appendChild(button);
+            });
+            
+            atualizarBreadcrumb();
+            atualizarControlesNavegacao();
+        }
+
+        async function selecionarOpcao(opcaoId) {
+            // Lógica para 'Voltar', 'Menu Principal' e 'Encerrar contato'
+            if (opcaoId === '0') { // Voltar
+                voltarMenu();
+                return;
+            } else if (opcaoId === '9') { // Menu Principal
+                voltarInicio();
+                return;
+            } else if (opcaoId === 'X') { // Encerrar contato
+                exibirResposta('Obrigado pelo contato. Até logo!');
+                document.getElementById('menu-options').style.display = 'none';
+                document.getElementById('navigation-controls').style.display = 'none';
+                return;
+            }
+
+            menuStack.push({path: [...currentPath], endpoint: currentMenuEndpoint});
+            currentPath.push(opcaoId);
+            
+            // Lógica de navegação para os submenus
+            if (currentPath.length === 1) { // Menu Principal
+                if (opcaoId === '1') { // Exames
+                    await carregarMenu('/api/consultorio/exames');
+                } else if (opcaoId === '2') { // Consultas
+                    await carregarMenu('/api/consultorio/consultas');
+                } else if (opcaoId === '3') { // Autorizações
+                    await buscarResposta(); // Autorizações ainda é uma resposta direta
+                }
+            } else if (currentPath.length === 2) { // Submenus de Exames ou Consultas
+                const parentOption = currentPath[0];
+                const currentOption = currentPath[1];
+
+                if (parentOption === '1') { // Exames
+                    if (currentOption === '1') { // Laboratório
+                        await carregarMenu('/api/consultorio/laboratorio');
+                    } else if (currentOption === '2') { // Imagem
+                        await carregarMenu('/api/consultorio/imagem');
+                    } else if (currentOption === '3') { // Resultados
+                        await carregarMenu('/api/consultorio/resultados');
+                    }
+                } else if (parentOption === '2') { // Consultas
+                    if (currentOption === '1') { // Selecionar Especialidade
+                        await carregarFormularioConsulta('agendar');
+                    } else if (currentOption === '2') { // Remarcar Consulta
+                        await carregarFormularioConsulta('remarcar');
+                    } else if (currentOption === '3') { // Confirmar Consulta
+                        await carregarFormularioConsulta('confirmar');
+                    }
+                }
+            } else if (currentPath.length === 3) { // Submenus de Laboratório, Imagem, Resultados ou Especialidades
+                const parentOption = currentPath[0];
+                const grandParentOption = currentPath[1];
+                const currentOption = currentPath[2];
+
+                if (parentOption === '1') { // Exames
+                    if (grandParentOption === '1' || grandParentOption === '2' || grandParentOption === '3') { // Laboratório, Imagem, Resultados
+                        await buscarResposta();
+                    }
+                }
+            }
+        }
+
+        async function buscarResposta() {
+            mostrarLoading(true);
+            ocultarError();
+            
+            try {
+                const response = await fetch('/api/consultorio/resposta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ caminho: currentPath })
+                });
+                
+                if (!response.ok) throw new Error('Resposta não encontrada');
+                
+                const data = await response.json();
+                
+                if (data.resposta) {
+                    exibirResposta(data.resposta);
+                } else {
+                    mostrarError('Resposta não encontrada para esta opção.');
+                }
+                
+            } catch (error) {
+                mostrarError('Erro ao buscar resposta. Tente novamente.');
+                console.error('Erro:', error);
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        function exibirResposta(resposta) {
+            const responseArea = document.getElementById('response-area');
+            const responseText = document.getElementById('response-text');
+            const menuOptions = document.getElementById('menu-options');
+            const formArea = document.getElementById('form-area');
+            
+            responseText.textContent = resposta;
+            responseArea.style.display = 'block';
+            responseArea.classList.add('fade-in');
+            menuOptions.style.display = 'none';
+            formArea.style.display = 'none';
+            
+            atualizarControlesNavegacao();
+        }
+
+        function ocultarResposta() {
+            const responseArea = document.getElementById('response-area');
+            const menuOptions = document.getElementById('menu-options');
+            
+            responseArea.style.display = 'none';
+            menuOptions.style.display = 'flex';
+        }
+
+        function voltarMenu() {
+            if (menuStack.length > 0) {
+                const previousMenu = menuStack.pop();
+                currentPath = [...previousMenu.path];
+                carregarMenu(previousMenu.endpoint);
+            } else {
+                voltarInicio();
+            }
+        }
+
+        function voltarInicio() {
+            carregarMenuPrincipal();
+        }
+
+        function atualizarBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (currentPath.length === 0) {
+                breadcrumb.style.display = 'none';
+                return;
+            }
+            
+            let breadcrumbText = 'Navegação: Início';
+            
+            if (currentPath.length >= 1) {
+                const mainOption = currentPath[0];
+                if (mainOption === '1') breadcrumbText += ' > Exames';
+                else if (mainOption === '2') breadcrumbText += ' > Consultas';
+                else if (mainOption === '3') breadcrumbText += ' > Autorizações';
+            }
+            
+            if (currentPath.length >= 2) {
+                const mainOption = currentPath[0];
+                const subOption = currentPath[1];
+                if (mainOption === '1') { // Exames
+                    if (subOption === '1') breadcrumbText += ' > Laboratório';
+                    else if (subOption === '2') breadcrumbText += ' > Imagem';
+                    else if (subOption === '3') breadcrumbText += ' > Resultados';
+                } else if (mainOption === '2') { // Consultas
+                    if (subOption === '1') breadcrumbText += ' > Selecionar Especialidade';
+                    else if (subOption === '2') breadcrumbText += ' > Remarcar Consulta';
+                    else if (subOption === '3') breadcrumbText += ' > Confirmar Consulta';
+                }
+            }
+
+            if (currentPath.length >= 3) {
+                const mainOption = currentPath[0];
+                const subOption = currentPath[1];
+                const thirdOption = currentPath[2];
+                if (mainOption === '2' && subOption === '1') { // Consultas > Selecionar Especialidade
+                    // No breadcrumb para especialidade, pois é um formulário
+                }
+            }
+            
+            breadcrumb.textContent = breadcrumbText;
+            breadcrumb.style.display = 'block';
+        }
+
+        function atualizarControlesNavegacao() {
+            const controls = document.getElementById('navigation-controls');
+            const backBtn = document.getElementById('back-btn');
+            
+            if (currentPath.length > 0) {
+                controls.style.display = 'block';
+                backBtn.style.display = menuStack.length > 0 ? 'inline-block' : 'none';
+            } else {
+                controls.style.display = 'none';
+            }
+        }
+
+        function mostrarLoading(show) {
+            const loading = document.getElementById('loading');
+            loading.style.display = show ? 'block' : 'none';
+        }
+
+        function mostrarError(mensagem) {
+            const error = document.getElementById('error');
+            error.textContent = mensagem;
+            error.style.display = 'block';
+        }
+
+        function ocultarError() {
+            const error = document.getElementById('error');
+            error.style.display = 'none';
+        }
+
+        // Funções para o formulário de consultas
+        async function carregarFormularioConsulta(acao) {
+            mostrarLoading(true);
+            ocultarError();
+            ocultarResposta();
+            document.getElementById('menu-options').style.display = 'none';
+            document.getElementById('form-area').style.display = 'block';
+            document.getElementById('form-area').classList.add('fade-in');
+
+            // Resetar campos
+            document.getElementById('nome').value = '';
+            document.getElementById('nascimento').value = '';
+            document.getElementById('especialidade').innerHTML = '';
+            document.getElementById('nova-data').value = '';
+            document.getElementById('data-consulta').value = '';
+
+            // Esconder todos os campos extras
+            document.getElementById('especialidade-select-group').style.display = 'none';
+            document.getElementById('nova-data-group').style.display = 'none';
+            document.getElementById('data-consulta-group').style.display = 'none';
+
+            const submitBtn = document.getElementById('submit-form-btn');
+            submitBtn.onclick = () => enviarFormularioConsulta(acao);
+
+            if (acao === 'agendar' || acao === 'remarcar' || acao === 'confirmar') {
+                document.getElementById('especialidade-select-group').style.display = 'block';
+                await carregarEspecialidades();
+            }
+
+            if (acao === 'remarcar') {
+                document.getElementById('nova-data-group').style.display = 'block';
+            }
+
+            if (acao === 'confirmar') {
+                document.getElementById('data-consulta-group').style.display = 'block';
+            }
+
+            mostrarLoading(false);
+        }
+
+        async function carregarEspecialidades() {
+            try {
+                const response = await fetch('/api/consultorio/especialidades');
+                if (!response.ok) throw new Error('Erro ao carregar especialidades');
+                const data = await response.json();
+                const selectElement = document.getElementById('especialidade');
+                selectElement.innerHTML = '<option value="">Selecione uma especialidade</option>';
+                data.opcoes.forEach(esp => {
+                    if (esp.id !== '0' && esp.id !== '9' && esp.id !== 'X') { // Excluir opções de navegação
+                        const option = document.createElement('option');
+                        option.value = esp.id;
+                        option.textContent = esp.texto;
+                        selectElement.appendChild(option);
+                    }
+                });
+            } catch (error) {
+                mostrarError('Erro ao carregar especialidades.');
+                console.error('Erro:', error);
+            }
+        }
+
+        async function enviarFormularioConsulta(acao) {
+            mostrarLoading(true);
+            ocultarError();
+
+            const nome = document.getElementById('nome').value;
+            const nascimento = document.getElementById('nascimento').value;
+            const especialidade = document.getElementById('especialidade').value;
+            const novaData = document.getElementById('nova-data').value;
+            const dataConsulta = document.getElementById('data-consulta').value;
+
+            if (!nome || !nascimento || (especialidade === '' && (acao === 'agendar' || acao === 'remarcar' || acao === 'confirmar'))) {
+                mostrarError('Por favor, preencha todos os campos obrigatórios.');
+                mostrarLoading(false);
+                return;
+            }
+
+            const payload = {
+                nome: nome,
+                nascimento: nascimento,
+                especialidade: especialidade,
+                acao: acao
+            };
+
+            if (acao === 'remarcar') {
+                payload.nova_data = novaData;
+            }
+            if (acao === 'confirmar') {
+                payload.data_consulta = dataConsulta;
+            }
+
+            try {
+                const response = await fetch('/api/consultorio/agendar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Erro ao processar solicitação.');
+
+                const data = await response.json();
+                exibirResposta(data.resposta);
+
+            } catch (error) {
+                mostrarError('Erro ao enviar formulário. Tente novamente.');
+                console.error('Erro:', error);
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        function ocultarFormulario() {
+            document.getElementById('form-area').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
