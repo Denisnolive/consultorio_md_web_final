@@ -280,7 +280,7 @@
     <script>
         let currentPath = [];
         let menuStack = [];
-        let currentMenuEndpoint = 
+        let currentMenuEndpoint = null
 
         // Inicializar a aplicação
         document.addEventListener('DOMContentLoaded', function() {
@@ -352,16 +352,16 @@
             menuStack.push({path: [...currentPath], endpoint: currentMenuEndpoint});
             currentPath.push(opcaoId);
             
-            // Lógica de navegação para os submenus
+            // Lógica de navegação para os submenus - CORRIGIDA
             if (currentPath.length === 1) { // Menu Principal
                 if (opcaoId === '1') { // Exames
                     await carregarMenu('/api/consultorio/exames');
                 } else if (opcaoId === '2') { // Consultas
                     await carregarMenu('/api/consultorio/consultas');
                 } else if (opcaoId === '3') { // Autorizações
-                    await buscarResposta(); // Autorizações ainda é uma resposta direta
+                    await carregarMenu('/api/consultorio/autorizacoes'); // ✅ CORREÇÃO AQUI
                 }
-            } else if (currentPath.length === 2) { // Submenus de Exames ou Consultas
+            } else if (currentPath.length === 2) { // Submenus de Exames, Consultas ou Autorizações
                 const parentOption = currentPath[0];
                 const currentOption = currentPath[1];
 
@@ -381,6 +381,9 @@
                     } else if (currentOption === '3') { // Confirmar Consulta
                         await carregarFormularioConsulta('confirmar');
                     }
+                } else if (parentOption === '3') { // Autorizações - ✅ NOVA SEÇÃO ADICIONADA
+                    // Para autorizações, as opções 1-6 são respostas diretas
+                    await buscarResposta();
                 }
             } else if (currentPath.length === 3) { // Submenus de Laboratório, Imagem, Resultados ou Especialidades
                 const parentOption = currentPath[0];
@@ -477,7 +480,7 @@
                 const mainOption = currentPath[0];
                 if (mainOption === '1') breadcrumbText += ' > Exames';
                 else if (mainOption === '2') breadcrumbText += ' > Consultas';
-                else if (mainOption === '3') breadcrumbText += ' > Autorizações';
+                else if (mainOption === '3') breadcrumbText += ' > Autorizações'; // ✅ Adicionado
             }
             
             if (currentPath.length >= 2) {
@@ -491,8 +494,13 @@
                     if (subOption === '1') breadcrumbText += ' > Selecionar Especialidade';
                     else if (subOption === '2') breadcrumbText += ' > Remarcar Consulta';
                     else if (subOption === '3') breadcrumbText += ' > Confirmar Consulta';
+                } else if (mainOption === '3') { // ✅ Autorizações adicionadas
+                    breadcrumbText += ' > Selecionar Exame';
                 }
             }
+
+            // ... resto do código permanece igual
+        }
 
             if (currentPath.length >= 3) {
                 const mainOption = currentPath[0];
@@ -505,7 +513,7 @@
             
             breadcrumb.textContent = breadcrumbText;
             breadcrumb.style.display = 'block';
-        }
+        
 
         function atualizarControlesNavegacao() {
             const controls = document.getElementById('navigation-controls');
